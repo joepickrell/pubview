@@ -1,0 +1,17 @@
+
+User: {{user.username}}
+<h1>{{ paper.title }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<p>
+{{paper.abstract}}
+<form action="{% url 'pubview:vote' paper.id %}" method="post">
+{% csrf_token %}
+
+<input type="radio" name="votetype" id="1" value="U" />
+<label for="choice1">Upvote</label><br />
+<input type="radio" name="votetype" id="2" value="D" />
+<label for="choice2">Downvote</label><br />
+<input type="submit" value="Vote" />
+</form>
+</p>
+

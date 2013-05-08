@@ -1,0 +1,48 @@
+{% load staticfiles %}
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'pubview/style.css' %}" />
+<script type="text/javascript" src="/static/pubview/jquery-1.2.6.min.js"></script>
+<title>{% block title %}Recent publications{% endblock %}</title>
+</head>
+
+
+{% block content %}
+User: {{user.username}}
+{% if latest_paper_list %}
+    <ol>
+     {% for paper in latest_paper_list %}
+	<div class = "list">
+        <li><a href="{% url 'pubview:detail' paper.id %}">{{ paper.title }}</a><br>
+	Authors: {{paper.get_authors}}<br>
+	Abstract: {{ paper.abstract }}</li>
+	<form action="{% url 'pubview:vote' paper.id %}" method="post">
+	{% csrf_token %}
+	<input type="radio" name="votetype" id="1" value="U" />
+	<label for="choice1">Upvote</label><br />
+	<input type="radio" name="votetype" id="2" value="D" />
+	<label for="choice2">Downvote</label><br />
+	<input type="submit" value="Vote" />
+	</form>
+	<div>
+    {% endfor %}
+    </ol>
+{% else %}
+    <p>No papers are available.</p>
+
+{% endif %}
+<script>
+var save_vote = function() {
+  var title = $("#paper").val()
+  var slug = $("#slug").val()
+  if (title != "" && slug != "") {
+    var data = { title:title, slug:slug };
+    var args = { type:"POST", url:"/vote/", data:data, complete:done };
+    $.ajax(args);
+  }
+  else {
+    // display an explanation of failure
+  }
+  return false;
+};
+</script>
+{% endblock %}
