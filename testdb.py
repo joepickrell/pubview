@@ -13,9 +13,9 @@ PaperVersion.objects.all().delete()
 Account.objects.all().delete()
 
 
-#u = User.objects.create_user('johndoe', 'john@doe.com', 'johnpassword')
-#u.save()
-u = User.objects.filter(username__startswith='john')[0]
+u = User.objects.create_user('johndoe', 'john@doe.com', 'johnpassword')
+u.save()
+#u = User.objects.filter(username__startswith='john')[0]
 a = Account(user = u)
 a.save()
 #u = Account.objects.filter(user__username__startswith='john')

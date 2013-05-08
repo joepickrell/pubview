@@ -1,48 +1,77 @@
 {% load staticfiles %}
 <head>
-<link rel="stylesheet" type="text/css" href="{% static 'pubview/style.css' %}" />
-<script type="text/javascript" src="/static/pubview/jquery-1.2.6.min.js"></script>
-<title>{% block title %}Recent publications{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href='/static/pubview/css/bootstrap.min.css' />
+  <link rel="stylesheet" type="text/css" href="{% static 'pubview/css/style.css' %}" />
+  <script type="text/javascript" src="/static/pubview/js/jquery-2.0.0.min.js"></script>
+  <script type="text/javascript" src="/static/pubview/js/bootstrap.min.js"></script>
+  <title>{% block title %}Recent publications{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-
-{% block content %}
-User: {{user.username}}
-{% if latest_paper_list %}
-    <ol>
-     {% for paper in latest_paper_list %}
-	<div class = "list">
-        <li><a href="{% url 'pubview:detail' paper.id %}">{{ paper.title }}</a><br>
-	Authors: {{paper.get_authors}}<br>
-	Abstract: {{ paper.abstract }}</li>
-	<form action="{% url 'pubview:vote' paper.id %}" method="post">
-	{% csrf_token %}
-	<input type="radio" name="votetype" id="1" value="U" />
-	<label for="choice1">Upvote</label><br />
-	<input type="radio" name="votetype" id="2" value="D" />
-	<label for="choice2">Downvote</label><br />
-	<input type="submit" value="Vote" />
-	</form>
-	<div>
-    {% endfor %}
-    </ol>
-{% else %}
-    <p>No papers are available.</p>
-
-{% endif %}
-<script>
-var save_vote = function() {
-  var title = $("#paper").val()
-  var slug = $("#slug").val()
-  if (title != "" && slug != "") {
-    var data = { title:title, slug:slug };
-    var args = { type:"POST", url:"/vote/", data:data, complete:done };
-    $.ajax(args);
-  }
-  else {
-    // display an explanation of failure
-  }
-  return false;
-};
-</script>
-{% endblock %}
+<body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="#">PubView</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="#">Front Page</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-unit">
+    <h1>Welcome to PubView!</h1>
+  </div>
+  
+  {% block content %}
+  User: {{user.username}}
+  <br/><br/>
+  {% if latest_paper_list %}
+  <div class='row'>
+    <div class='offset2 span8'>
+      <b>Unvoted:</b><br/><br/>
+      <ol>
+       {% for paper in latest_paper_list %}
+    <div class = "list">
+          <li><a href="{% url 'pubview:detail' paper.id %}">{{ paper.title }}</a><br>
+    Authors: {{paper.get_authors}}<br>
+    Abstract: {{ paper.abstract }}</li>
+    <form action="{% url 'pubview:vote' paper.id %}" method="post">
+    {% csrf_token %}
+    <button name="votetype" id="1" value="U" class='btn btn-success'><i class="icon-arrow-up icon-white"></i></button>
+    <button name="votetype" id="2" value="D" class='btn btn-danger'><i class="icon-arrow-down icon-white"></i></button>
+    </form>
+    <div>
+      {% endfor %}
+      </ol>
+    </div>
+    </div>
+  {% else %}
+      <p>No papers are available.</p>
+  
+  {% endif %}
+  <script>
+  var save_vote = function() {
+    var title = $("#paper").val()
+    var slug = $("#slug").val()
+    if (title != "" && slug != "") {
+      var data = { title:title, slug:slug };
+      var args = { type:"POST", url:"/vote/", data:data, complete:done };
+      $.ajax(args);
+    }
+    else {
+      // display an explanation of failure
+    }
+    return false;
+  };
+  </script>
+  {% endblock %}
+</body>

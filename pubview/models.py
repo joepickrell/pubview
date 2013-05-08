@@ -43,7 +43,7 @@ class Paper(models.Model):
 		toreturn = []
 		for a in self.author_set.all():
 			toreturn.append(a.__unicode__())
-		return ",".join(toreturn)
+		return ", ".join(toreturn)
 
 class PaperVersion(models.Model):
 	# need to be able to keep multiple versions of papers, e.g. arXiv version, published version

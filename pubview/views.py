@@ -19,18 +19,23 @@ def vote(request, paper_id):
             'paper': p,
             'error_message': "Vote type doesn't exist",
         })
-    else:
-	#has this user already voted on this paper?
-        if request.user.account.alreadyvoted(paper_id)==False:
-		# save if not
-		v.save()
-	else:
-		# is the vote the same?
-		testv = Vote.objects.get(account = request.user.account, paper = p)
-		if testv.votetype != v.votetype:
-			testv.votetype = v.votetype
-			testv.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('pubview:index'))
+    else: #has this user already voted on this paper?
+        if not request.user.account.alreadyvoted(paper_id): # save if not
+            v.save()
+        else:
+            # is the vote the same?
+            testv = Vote.objects.get(account = request.user.account, paper = p)
+            if testv.votetype != v.votetype:
+                testv.votetype = v.votetype
+                testv.save()
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.
+            return HttpResponseRedirect(reverse('pubview:index'))
+
+def list_unvoted_papers(request):
+    pass
+    ListView.as_view(
+		queryset=Paper.objects.order_by('-year')[:5],
+		context_object_name='latest_paper_list',
+		template_name='pubview/index.html')
