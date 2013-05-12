@@ -7,12 +7,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from pubview.models import Paper, Account, Vote
 
-#def index(request):
-#    a = request.user.account
-#    latest_paper_list = Paper.objects.all().order_by('-year')[:5]
-#    unvoted = 
-#    context = {'latest_paper_list': latest_poll_list}
-#    return render(request, 'pubview/index.html', context)
+def index(request):
+    a = request.user.account
+    latest_paper_list = Paper.objects.all().order_by('-year')[:5]
+    context = {'latest_paper_list': latest_poll_list}
+    return render(request, 'pubview/index.html', context)
 
 @login_required
 def vote(request, paper_id):

@@ -26,3 +26,8 @@ body {
     padding: 20px 20px 40px 20px;
 }
 
+.tooltip-inner {
+  font-size: 12px;
+  max-width: 400px;
+}
+

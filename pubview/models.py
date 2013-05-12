@@ -19,31 +19,34 @@ class Journal(models.Model):
 
 	
 class Paper(models.Model):
-	# paper is collection of PaperVersions
-	# need to keep title, year, abstract
-	# linked to authors via Author
-
-        title = models.CharField(max_length=1000)
-        journal = models.ForeignKey(Journal)
-        year = models.IntegerField()
-	abstract = models.CharField(max_length = 100000)
-	volume = models.IntegerField(default = -1)
-	number = models.IntegerField(default = -1)
-	startpage = models.IntegerField(default =-1)
-	endpage = models.IntegerField(default = -1)
-	#
-	# functions
-	#
-	def __unicode__(self):
-		return self.title
-	#
-	# get the authors
-	#
-	def get_authors(self):
-		toreturn = []
-		for a in self.author_set.all():
-			toreturn.append(a.__unicode__())
-		return ", ".join(toreturn)
+    # paper is collection of PaperVersions
+    # need to keep title, year, abstract
+    # linked to authors via Author
+    
+    title = models.CharField(max_length=1000)
+    journal = models.ForeignKey(Journal)
+    year = models.IntegerField()
+    abstract = models.CharField(max_length = 100000)
+    volume = models.IntegerField(default = -1)
+    number = models.IntegerField(default = -1)
+    startpage = models.IntegerField(default =-1)
+    endpage = models.IntegerField(default = -1)
+    #
+    # functions
+    #
+    def __unicode__(self):
+        return self.title
+    #
+    # get the authors
+    #
+    def get_authors(self):
+        toreturn = []
+        for a in self.author_set.all():
+            toreturn.append(a.__unicode__())
+        return ", ".join(toreturn)
+    
+    def get_citation(self):
+        return '%s, %s' % (self.journal, self.year)
 
 class PaperVersion(models.Model):
 	# need to be able to keep multiple versions of papers, e.g. arXiv version, published version
