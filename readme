@@ -2,7 +2,10 @@ prereqs:
 python 2.7
 django 1.5.0+ 
 
-1. you will need a settings.py file. Run:
+1. Get the code:
+>git clone https://github.com/joepickrell/pubview.git
+
+2. you will need a settings.py file. Run:
 
 >cp example_settings.py pubdb/settings.py
 
@@ -12,7 +15,7 @@ Now edit pubdb/settings.py for your machine (this is not under version control b
 
 needs to be edited to a database file on the local machine. This file will be created if it does not exist.
 
-2. now run: 
+3. now run: 
 
 >export DJANGO_SETTINGS_MODULE=pubdb.settings
 >python manage.py syncdb
