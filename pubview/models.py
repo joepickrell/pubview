@@ -99,8 +99,9 @@ class Vote(models.Model):
         VOTE_TYPES = (
                 ('U', 'Up'),
                 ('D', 'Down'),
+		('I', 'Irrelevant'),
         )
         account = models.ForeignKey(Account)
         paper = models.ForeignKey(Paper)
-        votetype = models.CharField(max_length = 2, choices = VOTE_TYPES)
+        votetype = models.CharField(max_length = 1, choices = VOTE_TYPES)
 	
