@@ -104,4 +104,17 @@ class Vote(models.Model):
         account = models.ForeignKey(Account)
         paper = models.ForeignKey(Paper)
         votetype = models.CharField(max_length = 1, choices = VOTE_TYPES)
+
+class Topic(models.Model):
+	name = models.CharField(max_length = 1000)
+	papers = models.ManyToManyField(Paper, through = 'PaperMembership')
+
+class PaperMembership(models.Model):
+	MEMBERSHIP_TYPES = (
+		('C', 'Core'),
+		('N', 'NonCore'),
+	)
+	paper = models.ForeignKey(Paper)
+	topic = models.ForeignKey(Topic)
+	membership_type = models.CharField(max_length = 1, choices = MEMBERSHIP_TYPES)
 	
